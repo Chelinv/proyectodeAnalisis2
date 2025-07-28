@@ -4,6 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/proyecto de Análisis2/', // 👈 agrega esta línea
   plugins: [react()],
   resolve: {
     alias: {
