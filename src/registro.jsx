@@ -114,9 +114,8 @@ export default function RegistroPage() {
       const usuarioCompleto = { ...nuevoUsuario, id: nuevoId };
       const nuevosUsuarios = [...usuarios, usuarioCompleto];
       
-      // ===================== MODIFICACIÓN ASISTENTE: REGISTRO SOLO AGREGA USUARIO =====================
+      // Agregar el nuevo usuario
       await axios.post('/api/usuarios/add', nuevoUsuario);
-      // ===================== FIN MODIFICACIÓN ASISTENTE =====================
       
       // Mostrar mensaje de éxito
       alert("¡Registro exitoso! Ahora puedes iniciar sesión con tus credenciales.");

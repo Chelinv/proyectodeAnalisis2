@@ -45,7 +45,7 @@ export default function ClientePage() {
     const userRole = localStorage.getItem("userRole")
     const userId = localStorage.getItem("userId")
     
-    if (!isAuthenticated || userRole !== "cliente") {
+    if (!isAuthenticated || (userRole !== "cliente" && userRole !== "Cliente")) {
       navigate("/login")
     } else {
       // Cargar información del usuario
@@ -56,6 +56,13 @@ export default function ClientePage() {
           const usuarioActual = usuarios.find(u => u.id === parseInt(userId))
           if (usuarioActual) {
             setUsuario(usuarioActual)
+          } else {
+            // Si no se encuentra el usuario, cerrar sesión
+            localStorage.removeItem("isAuthenticated")
+            localStorage.removeItem("userRole")
+            localStorage.removeItem("userId")
+            localStorage.removeItem("userName")
+            navigate("/login")
           }
         } catch (err) {
           console.error("Error al cargar información del usuario:", err)
@@ -329,27 +336,20 @@ export default function ClientePage() {
       const responseVentas = await axios.get('/api/ventas')
       const ventas = responseVentas.data
       
-      // Obtener datos actuales de clientes
-      const responseClientes = await axios.get('/api/clientes')
-      const clientes = responseClientes.data
+      // Obtener datos actuales de usuarios con rol Cliente
+      const responseUsuarios = await axios.get('/api/usuarios')
+      const usuarios = responseUsuarios.data
       
-      // Buscar cliente actual o crear uno nuevo
-      let cliente = clientes.find(c => c.id === parseInt(userId))
+      // Buscar usuario actual
+      let cliente = usuarios.find(u => u.id === parseInt(userId) && u.rol.toLowerCase() === 'cliente')
       
       if (!cliente) {
-        cliente = {
-          id: parseInt(userId),
-          // ===================== MODIFICACIÓN ASISTENTE: USAR NOMBRE ACTUAL DEL USUARIO =====================
-          nombre: usuario?.nombre || userName || "Cliente",
-          email: usuario?.email || "",
-          telefono: usuario?.telefono || "",
-          compras: 0,
-          totalGastado: 0
-        }
-        clientes.push(cliente)
+        // Si no se encuentra el cliente, redirigir al login
+        alert("Debe iniciar sesión como cliente para realizar una compra")
+        navigate("/login")
+        return
       } else {
-        // ===================== MODIFICACIÓN ASISTENTE: ACTUALIZAR NOMBRE SI ES DIFERENTE =====================
-        // Asegurar que el cliente tenga el nombre actual del usuario
+        // Asegurar que el cliente tenga la información actualizada
         if (usuario?.nombre && cliente.nombre !== usuario.nombre) {
           cliente.nombre = usuario.nombre
         }

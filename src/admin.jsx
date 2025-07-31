@@ -28,9 +28,6 @@ import axios from "axios"
 const productosDataInicial = []
 const inventarioDataInicial = []
 const ventasDataInicial = []
-// ===================== MODIFICACIÓN ASISTENTE: ELIMINAR DATOS INICIALES DE CLIENTES =====================
-// const clientesDataInicial = []
-// ===================== FIN MODIFICACIÓN ASISTENTE =====================
 const usuariosDataInicial = []
 
 export default function AdminPage() {
@@ -59,7 +56,7 @@ export default function AdminPage() {
       return
     }
     
-    if (userRole !== "administrador") {
+    if (userRole !== "administrador" && userRole !== "admin") {
       navigate("/")
       return
     }
@@ -99,6 +96,8 @@ export default function AdminPage() {
   const handleCerrarSesion = () => {
     localStorage.removeItem("isAuthenticated")
     localStorage.removeItem("userRole")
+    localStorage.removeItem("userId")
+    localStorage.removeItem("userName")
     navigate("/")
   }
   

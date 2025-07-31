@@ -38,7 +38,6 @@ export default function LoginPage() {
       );
       
       if (usuarioEncontrado) {
-        // ===================== MODIFICACIÓN ASISTENTE: LIMPIAR Y ACTUALIZAR LOCALSTORAGE =====================
         // Limpiar datos antiguos antes de guardar los nuevos
         localStorage.removeItem("isAuthenticated")
         localStorage.removeItem("userRole")
@@ -50,7 +49,6 @@ export default function LoginPage() {
         localStorage.setItem("userRole", usuarioEncontrado.rol.toLowerCase());
         localStorage.setItem("userId", usuarioEncontrado.id);
         localStorage.setItem("userName", usuarioEncontrado.nombre);
-        // ===================== FIN MODIFICACIÓN ASISTENTE =====================
         
         // Actualizar último acceso
         const usuariosActualizados = usuarios.map(u => 
@@ -63,7 +61,8 @@ export default function LoginPage() {
         await axios.post('/api/usuarios', usuariosActualizados);
         
         // Redirigir según el rol
-        if (usuarioEncontrado.rol.toLowerCase() === "administrador") {
+        if (usuarioEncontrado.rol.toLowerCase() === "administrador" || 
+            usuarioEncontrado.rol.toLowerCase() === "admin") {
           navigate("/admin");
         } else {
           navigate("/cliente");
