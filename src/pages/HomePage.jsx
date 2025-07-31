@@ -33,24 +33,24 @@ export default function HomePage() {
       <section className="navigation-section">
         <div className="navigation-container">
           <div className="navigation-buttons">
-            <Button className="nav-button login-button">
-              <Link to="/catalogo" className="flex items-center gap-2">
-                <BookOpen className="nav-icon" />
-                Ver Catálogo
-              </Link>
-            </Button>
-            <Button className="nav-button login-button">
-              <Link to="/contacto" className="flex items-center gap-2">
-                <Phone className="nav-icon" />
-                Contacto
-              </Link>
-            </Button>
-            <Button className="nav-button login-button">
-              <Link to="/ayuda" className="flex items-center gap-2">
-                <HelpCircle className="nav-icon" />
-                Ayuda
-              </Link>
-            </Button>
+            {/* ===================== MODIFICACIÓN ASISTENTE: BOTÓN CATÁLOGO COMO LINK ===================== */}
+            <Link to="/catalogo" className="nav-button login-button flex items-center gap-2">
+              <BookOpen className="nav-icon" />
+              Ver Catálogo
+            </Link>
+            {/* ===================== FIN MODIFICACIÓN ASISTENTE ===================== */}
+            {/* ===================== MODIFICACIÓN ASISTENTE: BOTÓN CONTACTO COMO LINK ===================== */}
+            <Link to="/contacto" className="nav-button login-button flex items-center gap-2">
+              <Phone className="nav-icon" />
+              Contacto
+            </Link>
+            {/* ===================== FIN MODIFICACIÓN ASISTENTE ===================== */}
+            {/* ===================== MODIFICACIÓN ASISTENTE: BOTÓN AYUDA COMO LINK ===================== */}
+            <Link to="/ayuda" className="nav-button login-button flex items-center gap-2">
+              <HelpCircle className="nav-icon" />
+              Ayuda
+            </Link>
+            {/* ===================== FIN MODIFICACIÓN ASISTENTE ===================== */}
           </div>
         </div>
       </section>
@@ -140,9 +140,9 @@ export default function HomePage() {
         <div className="offers-container">
           <h3 className="offers-title">Ofertas Especiales</h3>
           <p className="offers-subtitle">Aprovecha nuestras promociones especiales en productos seleccionados</p>
-          <Button className="offers-button login-button">
-            <Link to="/ofertas">Ver Ofertas</Link>
-          </Button>
+          {/* ===================== MODIFICACIÓN ASISTENTE: BOTÓN OFERTAS COMO LINK ===================== */}
+          <Link to="/ofertas" className="offers-button login-button">Ver Ofertas</Link>
+          {/* ===================== FIN MODIFICACIÓN ASISTENTE ===================== */}
         </div>
       </section>
 

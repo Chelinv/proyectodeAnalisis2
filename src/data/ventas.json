@@ -1,0 +1,259 @@
+[
+  {
+    "id": 1,
+    "cliente": "Juan Pérez",
+    "productos": [
+      {
+        "id": 1,
+        "nombre": "Cuaderno Universitario 100 hojas",
+        "cantidad": 2,
+        "precioUnitario": 2.5
+      },
+      {
+        "id": 2,
+        "nombre": "Lápiz HB Faber-Castell",
+        "cantidad": 5,
+        "precioUnitario": 0.5
+      }
+    ],
+    "total": 7.5,
+    "fecha": "2024-01-15",
+    "estado": "Completada"
+  },
+  {
+    "id": 2,
+    "cliente": "María García",
+    "productos": [
+      {
+        "id": 3,
+        "nombre": "Set de Colores 24 unidades",
+        "cantidad": 1,
+        "precioUnitario": 8.75
+      }
+    ],
+    "total": 8.75,
+    "fecha": "2024-01-14",
+    "estado": "Completada"
+  },
+  {
+    "id": 3,
+    "cliente": "Carlos López",
+    "productos": [
+      {
+        "id": 4,
+        "nombre": "Grapadora Metálica",
+        "cantidad": 1,
+        "precioUnitario": 12
+      },
+      {
+        "id": 5,
+        "nombre": "Borrador Blanco Pelikan",
+        "cantidad": 1,
+        "precioUnitario": 0.75
+      }
+    ],
+    "total": 12.75,
+    "fecha": "2024-01-13",
+    "estado": "Pendiente"
+  },
+  {
+    "id": 4,
+    "cliente": "Carlos López",
+    "productos": [
+      {
+        "id": 1,
+        "nombre": "Cuaderno Universitario 100 hojas",
+        "cantidad": 1,
+        "precioUnitario": 2.5
+      }
+    ],
+    "total": 2.5,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100004"
+  },
+  {
+    "id": 5,
+    "cliente": "Carlos López",
+    "productos": [
+      {
+        "id": 2,
+        "nombre": "Lápiz HB Faber-Castell",
+        "cantidad": 1,
+        "precioUnitario": 0.5
+      },
+      {
+        "id": 1,
+        "nombre": "Cuaderno Universitario 100 hojas",
+        "cantidad": 1,
+        "precioUnitario": 2.5
+      }
+    ],
+    "total": 3,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100005"
+  },
+  {
+    "id": 6,
+    "cliente": "Carlos López",
+    "productos": [
+      {
+        "id": 2,
+        "nombre": "Lápiz HB Faber-Castell",
+        "cantidad": 2,
+        "precioUnitario": 0.5
+      }
+    ],
+    "total": 1,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100006"
+  },
+  {
+    "id": 7,
+    "cliente": "Carlos López",
+    "productos": [
+      {
+        "id": 3,
+        "nombre": "Set de Colores 24 unidades",
+        "cantidad": 3,
+        "precioUnitario": 8.75
+      },
+      {
+        "id": 4,
+        "nombre": "Grapadora Metálica",
+        "cantidad": 1,
+        "precioUnitario": 12
+      }
+    ],
+    "total": 38.25,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100007"
+  },
+  {
+    "id": 8,
+    "cliente": "Ana Martínez",
+    "productos": [
+      {
+        "id": 3,
+        "nombre": "Set de Colores 24 unidades",
+        "cantidad": 2,
+        "precioUnitario": 8.75
+      }
+    ],
+    "total": 17.5,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100008"
+  },
+  {
+    "id": 9,
+    "cliente": "Carlos López",
+    "productos": [
+      {
+        "id": 5,
+        "nombre": "Borrador Blanco Pelikan",
+        "cantidad": 1,
+        "precioUnitario": 0.75
+      }
+    ],
+    "total": 0.75,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100009"
+  },
+  {
+    "id": 10,
+    "cliente": "Carlos López",
+    "productos": [
+      {
+        "id": 1753755502152,
+        "nombre": "hojas",
+        "cantidad": 2,
+        "precioUnitario": 0.5
+      }
+    ],
+    "total": 1,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100010"
+  },
+  {
+    "id": 11,
+    "cliente": "Carlos López",
+    "productos": [
+      {
+        "id": 1,
+        "nombre": "Cuaderno Universitario 100 hojas",
+        "cantidad": 1,
+        "precioUnitario": 2.5
+      },
+      {
+        "id": 2,
+        "nombre": "Lápiz HB Faber-Castell",
+        "cantidad": 1,
+        "precioUnitario": 0.5
+      }
+    ],
+    "total": 3,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100011"
+  },
+  {
+    "id": 12,
+    "cliente": "Celine Betzabé",
+    "productos": [
+      {
+        "id": 5,
+        "nombre": "Borrador Blanco Pelikan",
+        "cantidad": 1,
+        "precioUnitario": 0.75
+      }
+    ],
+    "total": 0.75,
+    "fecha": "2025-07-29",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100012"
+  },
+  {
+    "id": 13,
+    "cliente": "henrry",
+    "productos": [
+      {
+        "id": 5,
+        "nombre": "Borrador Blanco Pelikan",
+        "cantidad": 1,
+        "precioUnitario": 0.75
+      },
+      {
+        "id": 4,
+        "nombre": "Grapadora Metálica",
+        "cantidad": 1,
+        "precioUnitario": 11
+      }
+    ],
+    "total": 11.75,
+    "fecha": "2025-07-30",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100013"
+  },
+  {
+    "id": 14,
+    "cliente": "Celine Betzabé",
+    "productos": [
+      {
+        "id": 1,
+        "nombre": "Cuaderno Universitario 100 hojas",
+        "cantidad": 1,
+        "precioUnitario": 2.5
+      }
+    ],
+    "total": 2.5,
+    "fecha": "2025-07-30",
+    "estado": "Procesando",
+    "numeroSeguimiento": "BM100014"
+  }
+]

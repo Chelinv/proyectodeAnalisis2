@@ -4,6 +4,7 @@ import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import { Package, ArrowLeft, User, Phone, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function RegistroPage() {
   const [formData, setFormData] = useState({
@@ -62,18 +63,6 @@ export default function RegistroPage() {
       nuevosErrores.confirmarContraseña = "Las contraseñas no coinciden";
     }
 
-    // Validar usuario único (simulado)
-    const usuariosExistentes = ["admin", "cliente", "vendedor", "cajero"];
-    if (formData.usuario && usuariosExistentes.includes(formData.usuario.toLowerCase())) {
-      nuevosErrores.usuario = "Este usuario ya existe";
-    }
-
-    // Validar email único (simulado)
-    const emailsExistentes = ["admin@bazar.com", "cliente@bazar.com", "info@bazarmarlene.com"];
-    if (formData.email && emailsExistentes.includes(formData.email.toLowerCase())) {
-      nuevosErrores.email = "Este email ya está registrado";
-    }
-
     setErrores(nuevosErrores);
     return Object.keys(nuevosErrores).length === 0;
   };
@@ -87,20 +76,59 @@ export default function RegistroPage() {
 
     setLoading(true);
 
-    // Simular delay de registro
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // Simular registro exitoso
-    // En una aplicación real, aquí se enviarían los datos al servidor
-    console.log("Datos de registro:", formData);
-
-    // Mostrar mensaje de éxito
-    alert("¡Registro exitoso! Ahora puedes iniciar sesión con tus credenciales.");
-
-    // Redirigir al login
-    navigate("/login");
-
-    setLoading(false);
+    try {
+      // Verificar si el usuario ya existe
+      const usuariosResponse = await axios.get('/api/usuarios');
+      const usuarios = usuariosResponse.data;
+      
+      const usuarioExistente = usuarios.find(
+        u => u.usuario === formData.usuario || u.email === formData.email
+      );
+      
+      if (usuarioExistente) {
+        if (usuarioExistente.usuario === formData.usuario) {
+          setErrores(prev => ({ ...prev, usuario: "Este usuario ya existe" }));
+        }
+        if (usuarioExistente.email === formData.email) {
+          setErrores(prev => ({ ...prev, email: "Este email ya está registrado" }));
+        }
+        setLoading(false);
+        return;
+      }
+      
+      // Crear nuevo usuario
+      const nuevoUsuario = {
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        email: formData.email,
+        telefono: formData.telefono,
+        usuario: formData.usuario,
+        contraseña: formData.contraseña,
+        rol: 'Cliente',
+        estado: 'Activo',
+        ultimoAcceso: new Date().toISOString().split('T')[0]
+      };
+      
+      // Agregar el nuevo usuario a la lista
+      const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
+      const usuarioCompleto = { ...nuevoUsuario, id: nuevoId };
+      const nuevosUsuarios = [...usuarios, usuarioCompleto];
+      
+      // ===================== MODIFICACIÓN ASISTENTE: REGISTRO SOLO AGREGA USUARIO =====================
+      await axios.post('/api/usuarios/add', nuevoUsuario);
+      // ===================== FIN MODIFICACIÓN ASISTENTE =====================
+      
+      // Mostrar mensaje de éxito
+      alert("¡Registro exitoso! Ahora puedes iniciar sesión con tus credenciales.");
+      
+      // Redirigir al login
+      navigate("/login");
+    } catch (error) {
+      console.error("Error al registrar usuario:", error);
+      alert("Error al registrar usuario. Por favor, intenta nuevamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

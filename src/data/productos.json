@@ -1,0 +1,113 @@
+[
+  {
+    "id": 1,
+    "nombre": "Cuaderno Universitario 100 hojas",
+    "categoria": "Papelería",
+    "precio": 2.5,
+    "descripcion": "Cuaderno universitario de 100 hojas rayadas, tapa dura",
+    "descripcionDetallada": "Cuaderno universitario profesional con 100 hojas de papel bond de alta calidad. Cuenta con tapa dura resistente, espiral metálico y hojas rayadas perfectas para tomar apuntes. Ideal para estudiantes universitarios y profesionales.",
+    "rating": 4.5,
+    "stock": 146,
+    "especificaciones": [
+      "100 hojas de papel bond 75g",
+      "Tapa dura plastificada resistente",
+      "Espiral metálico doble resistente",
+      "Tamaño: 21 x 29.7 cm (A4)",
+      "Hojas rayadas con margen rojo",
+      "Papel libre de ácido",
+      "Perforación estándar de 3 huecos"
+    ],
+    "marca": "Norma",
+    "garantia": "30 días por defectos de fabricación"
+  },
+  {
+    "id": 2,
+    "nombre": "Lápiz HB Faber-Castell",
+    "categoria": "Papelería",
+    "precio": 0.5,
+    "descripcion": "Lápiz de grafito HB de alta calidad",
+    "descripcionDetallada": "Lápiz de grafito HB de la reconocida marca Faber-Castell. Fabricado con madera de cedro de alta calidad y grafito uniforme que garantiza un trazo suave y preciso. Perfecto para escritura y dibujo técnico.",
+    "rating": 4.8,
+    "stock": 296,
+    "especificaciones": [
+      "Grafito HB de alta calidad",
+      "Madera de cedro",
+      "Longitud: 17.5 cm",
+      "Hexagonal antideslizante",
+      "Punta resistente a la rotura"
+    ],
+    "marca": "Faber-Castell",
+    "garantia": "Garantía de calidad del fabricante"
+  },
+  {
+    "id": 3,
+    "nombre": "Set de Colores 24 unidades",
+    "categoria": "Material de Arte",
+    "precio": 8.75,
+    "descripcion": "Set de colores de madera con 24 tonalidades diferentes",
+    "descripcionDetallada": "Set completo de 24 colores de madera con pigmentos vibrantes y duraderos. Cada lápiz está fabricado con madera de cedro y mina de alta calidad que proporciona colores intensos y uniformes. Incluye estuche organizador.",
+    "rating": 4.3,
+    "stock": 40,
+    "especificaciones": [
+      "24 colores diferentes",
+      "Madera de cedro premium",
+      "Mina de 3.3mm",
+      "Pigmentos no tóxicos",
+      "Incluye estuche organizador"
+    ],
+    "marca": "Prismacolor",
+    "garantia": "60 días por defectos de fabricación"
+  },
+  {
+    "id": 4,
+    "nombre": "Grapadora Metálica",
+    "categoria": "Oficina",
+    "precio": 11,
+    "descripcion": "Grapadora metálica resistente para uso profesional",
+    "descripcionDetallada": "Grapadora metálica de uso pesado, ideal para oficinas y uso profesional. Construida completamente en metal con mecanismo de precisión que garantiza un grapado perfecto. Capacidad para grapar hasta 25 hojas simultáneamente.",
+    "rating": 4.6,
+    "stock": 23,
+    "especificaciones": [
+      "Construcción 100% metálica",
+      "Capacidad: 25 hojas",
+      "Usa grapas estándar 26/6",
+      "Base antideslizante",
+      "Mecanismo de precisión"
+    ],
+    "marca": "Swingline",
+    "garantia": "1 año por defectos de fabricación"
+  },
+  {
+    "id": 5,
+    "nombre": "Borrador Blanco Pelikan",
+    "categoria": "Papelería",
+    "precio": 0.75,
+    "descripcion": "Borrador blanco suave que no daña el papel",
+    "descripcionDetallada": "Borrador de goma blanca de alta calidad que borra limpiamente sin dañar el papel. Su fórmula especial no deja residuos y es ideal para uso en papel bond, cuadernos y documentos importantes.",
+    "rating": 4.2,
+    "stock": 197,
+    "especificaciones": [
+      "Goma blanca de alta calidad",
+      "No deja residuos",
+      "Suave con el papel",
+      "Tamaño: 6 x 2 x 1 cm",
+      "Libre de PVC"
+    ],
+    "marca": "Pelikan",
+    "garantia": "Garantía de calidad del fabricante"
+  },
+  {
+    "id": 1753845104999.4788,
+    "nombre": "esferos azul",
+    "categoria": "Papelería",
+    "precio": 0.25,
+    "stock": 300
+  },
+  {
+    "id": 1753845130183.8167,
+    "nombre": "Hojas",
+    "categoria": "Papelería",
+    "precio": 0.1,
+    "stock": 200
+  }
+]

@@ -1,0 +1,186 @@
+[
+  {
+    "id": 1,
+    "producto": "Cuaderno Universitario 100 hojas",
+    "movimiento": "Entrada",
+    "cantidad": 50,
+    "fecha": "2024-01-15",
+    "motivo": "Compra"
+  },
+  {
+    "id": 2,
+    "producto": "Lápiz HB Faber-Castell",
+    "movimiento": "Salida",
+    "cantidad": 25,
+    "fecha": "2024-01-14",
+    "motivo": "Venta"
+  },
+  {
+    "id": 3,
+    "producto": "Set de Colores 24 unidades",
+    "movimiento": "Entrada",
+    "cantidad": 20,
+    "fecha": "2024-01-13",
+    "motivo": "Compra"
+  },
+  {
+    "id": 4,
+    "producto": "Grapadora Metálica",
+    "movimiento": "Salida",
+    "cantidad": 5,
+    "fecha": "2024-01-12",
+    "motivo": "Venta"
+  },
+  {
+    "id": 5,
+    "producto": "Cuaderno Universitario 100 hojas",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #4"
+  },
+  {
+    "id": 6,
+    "producto": "Lápiz HB Faber-Castell",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #5"
+  },
+  {
+    "id": 6,
+    "producto": "Cuaderno Universitario 100 hojas",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #5"
+  },
+  {
+    "id": 7,
+    "producto": "Lápiz HB Faber-Castell",
+    "tipo": "Salida",
+    "cantidad": 2,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #6"
+  },
+  {
+    "id": 8,
+    "producto": "Set de Colores 24 unidades",
+    "tipo": "Salida",
+    "cantidad": 3,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #7"
+  },
+  {
+    "id": 8,
+    "producto": "Grapadora Metálica",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #7"
+  },
+  {
+    "id": 9,
+    "producto": "Set de Colores 24 unidades",
+    "tipo": "Salida",
+    "cantidad": 2,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #8"
+  },
+  {
+    "id": 10,
+    "producto": "Borrador Blanco Pelikan",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #9"
+  },
+  {
+    "id": 1753755502286,
+    "producto": "hojas",
+    "movimiento": "Entrada",
+    "cantidad": 200,
+    "fecha": "2025-07-29",
+    "motivo": "Nuevo producto"
+  },
+  {
+    "id": 1753755502287,
+    "producto": "hojas",
+    "tipo": "Salida",
+    "cantidad": 2,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #10"
+  },
+  {
+    "id": 1753755502288,
+    "producto": "Cuaderno Universitario 100 hojas",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #11"
+  },
+  {
+    "id": 1753755502288,
+    "producto": "Lápiz HB Faber-Castell",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #11"
+  },
+  {
+    "id": 1753755502289,
+    "producto": "Borrador Blanco Pelikan",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-29",
+    "motivo": "Venta #12"
+  },
+  {
+    "id": 1753755502290,
+    "producto": "Borrador Blanco Pelikan",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-30",
+    "motivo": "Venta #13"
+  },
+  {
+    "id": 1753755502290,
+    "producto": "Grapadora Metálica",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-30",
+    "motivo": "Venta #13"
+  },
+  {
+    "id": 1753845105081.051,
+    "producto": "esferos azul",
+    "movimiento": "Entrada",
+    "cantidad": 300,
+    "fecha": "2025-07-30",
+    "motivo": "Nuevo producto"
+  },
+  {
+    "id": 1753845115331.8313,
+    "producto": "hojas",
+    "movimiento": "Salida",
+    "cantidad": 198,
+    "fecha": "2025-07-30",
+    "motivo": "Producto eliminado"
+  },
+  {
+    "id": 1753845130220.6675,
+    "producto": "Hojas",
+    "movimiento": "Entrada",
+    "cantidad": 200,
+    "fecha": "2025-07-30",
+    "motivo": "Nuevo producto"
+  },
+  {
+    "id": 1753845130221.6675,
+    "producto": "Cuaderno Universitario 100 hojas",
+    "tipo": "Salida",
+    "cantidad": 1,
+    "fecha": "2025-07-30",
+    "motivo": "Venta #14"
+  }
+]

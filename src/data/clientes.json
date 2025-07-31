@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "nombre": "Juan Pérez",
+    "email": "juan@email.com",
+    "telefono": "555-0101",
+    "compras": 5,
+    "total": 125.5
+  },
+  {
+    "id": 2,
+    "nombre": "María García",
+    "email": "maria@email.com",
+    "telefono": "555-0102",
+    "compras": 3,
+    "total": 89.25
+  },
+  {
+    "id": 3,
+    "nombre": "Celine Betzabé",
+    "email": "carlos@email.com",
+    "telefono": "555-0103",
+    "compras": 16,
+    "total": 234.75,
+    "totalGastado": 50.25
+  },
+  {
+    "id": 4,
+    "nombre": "Ana Martínez",
+    "email": "ana@email.com",
+    "telefono": "555-0104",
+    "compras": 3,
+    "total": 45,
+    "totalGastado": null
+  },
+  {
+    "id": 5,
+    "nombre": "henrry",
+    "email": "henrry@gmail.com",
+    "telefono": "0996735426",
+    "compras": 1,
+    "totalGastado": 11.75
+  }
+]

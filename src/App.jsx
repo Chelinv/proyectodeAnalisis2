@@ -13,10 +13,11 @@ const OfertasPage = lazy(() => import('./ofertas'));
 const AdminPage = lazy(() => import('./admin'));
 const ClientePage = lazy(() => import('./cliente'));
 const ProductoPage = lazy(() => import('./producto'));
+const CarritoPage = lazy(() => import('./pages/CarritoPage'));
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Suspense fallback={<div className="loading">Cargando...</div>}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -29,6 +30,7 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/cliente" element={<ClientePage />} />
           <Route path="/producto/:id" element={<ProductoPage />} />
+          <Route path="/carrito" element={<CarritoPage />} />
         </Routes>
       </Suspense>
     </Router>

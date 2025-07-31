@@ -21,6 +21,7 @@ import {
 } from "lucide-react"
 import { Link, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
+import axios from "axios"
 
 export default function ProductoPage() {
   const params = useParams()
@@ -29,6 +30,64 @@ export default function ProductoPage() {
   const [imagenActiva, setImagenActiva] = useState(0)
   const [tabActiva, setTabActiva] = useState("descripcion")
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  // Cargar producto desde la API
+  useEffect(() => {
+    const cargarProducto = async () => {
+      setLoading(true)
+      setError("")
+      
+      try {
+        // Obtener todos los productos
+        const response = await axios.get('/api/productos')
+        const productos = response.data
+        
+        // Buscar el producto por ID
+        const productoEncontrado = productos.find(p => p.id === parseInt(params.id))
+        
+        if (productoEncontrado) {
+          setProducto(productoEncontrado)
+        } else {
+          // Si no se encuentra, buscar en los productos de ejemplo
+          const productoEjemplo = productosDB.find(p => p.id === parseInt(params.id))
+          
+          if (productoEjemplo) {
+            setProducto(productoEjemplo)
+          } else {
+            setError("Producto no encontrado")
+          }
+        }
+      } catch (err) {
+        console.error("Error al cargar el producto:", err)
+        setError("Error al cargar el producto. Por favor, intente nuevamente.")
+        
+        // Intentar cargar desde los datos de ejemplo
+        const productoEjemplo = productosDB.find(p => p.id === parseInt(params.id))
+        if (productoEjemplo) {
+          setProducto(productoEjemplo)
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    cargarProducto()
+  }, [params.id])
+
+  // Mapeo de iconos para productos
+  const getIconComponent = (categoria) => {
+    if (!categoria) return Package
+    
+    switch (categoria.toLowerCase()) {
+      case "papelería":
+        return BookOpen
+      case "material de arte":
+        return Palette
+      default:
+        return Package
+    }
+  }
 
   // Base de datos de productos (incluyendo ofertas y productos regulares)
   const productosDB = [

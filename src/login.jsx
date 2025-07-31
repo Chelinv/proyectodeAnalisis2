@@ -4,6 +4,7 @@ import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import { Package, ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./login.css";
 
 export default function LoginPage() {
@@ -18,23 +19,64 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    // Simular delay de autenticación
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Validar credenciales quemadas
-    if (usuario === "admin" && contraseña === "1234") {
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userRole", "admin");
-      navigate("/admin");
-    } else if (usuario === "cliente" && contraseña === "1234") {
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userRole", "cliente");
-      navigate("/cliente");
-    } else {
-      setError("Usuario o contraseña incorrectos");
+    try {
+      // Obtener usuarios del servidor
+      const response = await axios.get('/api/usuarios');
+      
+      // Verificar que la respuesta sea un array
+      if (!Array.isArray(response.data)) {
+        console.error("Error: La respuesta no es un array", response.data);
+        setError("Error en el formato de datos del servidor");
+        return;
+      }
+      
+      const usuarios = response.data;
+      
+      // Buscar usuario que coincida con las credenciales
+      const usuarioEncontrado = usuarios.find(
+        u => u.usuario === usuario && u.contraseña === contraseña
+      );
+      
+      if (usuarioEncontrado) {
+        // ===================== MODIFICACIÓN ASISTENTE: LIMPIAR Y ACTUALIZAR LOCALSTORAGE =====================
+        // Limpiar datos antiguos antes de guardar los nuevos
+        localStorage.removeItem("isAuthenticated")
+        localStorage.removeItem("userRole")
+        localStorage.removeItem("userId")
+        localStorage.removeItem("userName")
+        
+        // Guardar información de autenticación
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("userRole", usuarioEncontrado.rol.toLowerCase());
+        localStorage.setItem("userId", usuarioEncontrado.id);
+        localStorage.setItem("userName", usuarioEncontrado.nombre);
+        // ===================== FIN MODIFICACIÓN ASISTENTE =====================
+        
+        // Actualizar último acceso
+        const usuariosActualizados = usuarios.map(u => 
+          u.id === usuarioEncontrado.id 
+            ? { ...u, ultimoAcceso: new Date().toISOString().split('T')[0] } 
+            : u
+        );
+        
+        // Guardar la actualización
+        await axios.post('/api/usuarios', usuariosActualizados);
+        
+        // Redirigir según el rol
+        if (usuarioEncontrado.rol.toLowerCase() === "administrador") {
+          navigate("/admin");
+        } else {
+          navigate("/cliente");
+        }
+      } else {
+        setError("Usuario o contraseña incorrectos");
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      setError("Error al conectar con el servidor. Intente nuevamente.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (

@@ -3,6 +3,7 @@ import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { BookOpen, Star, Package, Scissors, Palette, Search, ArrowLeft, X, Plus, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./catalogo.css";
 
 export default function CatalogoPage() {
@@ -12,8 +13,50 @@ export default function CatalogoPage() {
   const [categoriaActiva, setCategoriaActiva] = useState("Todas");
   const [busqueda, setBusqueda] = useState("");
   const [productosFiltrados, setProductosFiltrados] = useState([]);
-
-  const productos = [
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState("");
+  
+  // Cargar productos desde la API
+  useEffect(() => {
+    const cargarProductos = async () => {
+      setCargando(true);
+      setError("");
+      
+      try {
+        const response = await axios.get('/api/productos');
+        setProductos(response.data);
+        setProductosFiltrados(response.data);
+      } catch (err) {
+        console.error("Error al cargar productos:", err);
+        setError("Error al cargar los productos. Por favor, intente nuevamente.");
+        // Si hay error, usar los productos de ejemplo
+        setProductos(productosEjemplo);
+        setProductosFiltrados(productosEjemplo);
+      } finally {
+        setCargando(false);
+      }
+    };
+    
+    cargarProductos();
+  }, []);
+  
+  // Mapeo de iconos para productos
+  const getIconComponent = (categoria) => {
+    switch (categoria.toLowerCase()) {
+      case "papelería":
+        return BookOpen;
+      case "material de arte":
+        return Palette;
+      case "útiles escolares":
+        return Scissors;
+      default:
+        return Package;
+    }
+  };
+  
+  // Productos de ejemplo para fallback si la API falla
+  const productosEjemplo = [
     {
       id: 1,
       nombre: "Cuaderno Universitario 100 hojas",
@@ -355,7 +398,15 @@ export default function CatalogoPage() {
     }
 
     setProductosFiltrados(productosFiltradosTemp);
-  }, [categoriaActiva, busqueda]);
+  }, [categoriaActiva, busqueda, productos]);
+  
+  // Si hay un error al cargar los productos, usar los productos de ejemplo
+  useEffect(() => {
+    if (error && productos.length === 0) {
+      setProductos(productosEjemplo);
+      setProductosFiltrados(productosEjemplo);
+    }
+  }, [error]);
 
   // Inicializar productos filtrados
   useEffect(() => {
@@ -397,7 +448,8 @@ export default function CatalogoPage() {
   const renderModal = () => {
     if (!mostrarModal || !productoSeleccionado) return null;
 
-    const IconComponent = productoSeleccionado.icon;
+    // ===================== MODIFICACIÓN ASISTENTE: ICONO MODAL SELECCIONADO POR CATEGORÍA =====================
+    const IconComponent = getIconComponent(productoSeleccionado.categoria);
     const totalPrecio = productoSeleccionado.precio * cantidad;
 
     return (
@@ -614,7 +666,8 @@ export default function CatalogoPage() {
           {productosFiltrados.length > 0 ? (
             <div className="products-grid">
               {productosFiltrados.map((producto) => {
-                const IconComponent = producto.icon;
+                // ===================== MODIFICACIÓN ASISTENTE: ICONO SELECCIONADO POR CATEGORÍA =====================
+                const IconComponent = getIconComponent(producto.categoria);
                 return (
                   <div key={producto.id} className="product-card">
                     <div className="product-icon-container">

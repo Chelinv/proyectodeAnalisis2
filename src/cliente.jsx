@@ -21,137 +21,244 @@ import {
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useNavigate, Link } from "react-router-dom"
-
-// Datos quemados de productos
-const productosData = [
-  {
-    id: 1,
-    nombre: "Cuaderno Universitario 100 hojas",
-    categoria: "Papelería",
-    precio: 2.5,
-    stock: 150,
-    descripcion: "Cuaderno universitario de 100 hojas rayadas, tapa dura",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    nombre: "Lápiz HB Faber-Castell",
-    categoria: "Papelería",
-    precio: 0.5,
-    stock: 300,
-    descripcion: "Lápiz de grafito HB de alta calidad",
-    rating: 4.8,
-  },
-  {
-    id: 3,
-    nombre: "Set de Colores 24 unidades",
-    categoria: "Regalos",
-    precio: 8.75,
-    stock: 45,
-    descripcion: "Set de colores de madera con 24 tonalidades diferentes",
-    rating: 4.3,
-  },
-  {
-    id: 4,
-    nombre: "Grapadora Metálica",
-    categoria: "Oficina",
-    precio: 12.0,
-    stock: 25,
-    descripcion: "Grapadora metálica resistente para uso profesional",
-    rating: 4.6,
-  },
-  {
-    id: 5,
-    nombre: "Borrador Blanco Pelikan",
-    categoria: "Papelería",
-    precio: 0.75,
-    stock: 200,
-    descripcion: "Borrador blanco suave que no daña el papel",
-    rating: 4.2,
-  },
-  {
-    id: 6,
-    nombre: "Agenda 2024 Ejecutiva",
-    categoria: "Regalos",
-    precio: 15.5,
-    stock: 30,
-    descripcion: "Agenda ejecutiva con calendario y notas",
-    rating: 4.7,
-  },
-  {
-    id: 7,
-    nombre: "Calculadora Científica",
-    categoria: "Oficina",
-    precio: 25.0,
-    stock: 15,
-    descripcion: "Calculadora científica con funciones avanzadas",
-    rating: 4.4,
-  },
-  {
-    id: 8,
-    nombre: "Marcadores Permanentes x6",
-    categoria: "Oficina",
-    precio: 6.25,
-    stock: 80,
-    descripcion: "Set de 6 marcadores permanentes de colores básicos",
-    rating: 4.1,
-  },
-]
-
-// Datos quemados de compras anteriores
-const comprasData = [
-  {
-    id: 1,
-    fecha: "2024-01-15",
-    productos: [
-      { nombre: "Cuaderno Universitario 100 hojas", cantidad: 2, precio: 2.5 },
-      { nombre: "Lápiz HB Faber-Castell", cantidad: 5, precio: 0.5 },
-    ],
-    total: 7.5,
-    estado: "Entregado",
-    numeroSeguimiento: "BM001234",
-  },
-  {
-    id: 2,
-    fecha: "2024-01-10",
-    productos: [
-      { nombre: "Set de Colores 24 unidades", cantidad: 1, precio: 8.75 },
-      { nombre: "Borrador Blanco Pelikan", cantidad: 3, precio: 0.75 },
-    ],
-    total: 11.0,
-    estado: "En tránsito",
-    numeroSeguimiento: "BM001235",
-  },
-  {
-    id: 3,
-    fecha: "2024-01-05",
-    productos: [{ nombre: "Grapadora Metálica", cantidad: 1, precio: 12.0 }],
-    total: 12.0,
-    estado: "Procesando",
-    numeroSeguimiento: "BM001236",
-  },
-]
+import axios from "axios"
 
 export default function ClientePage() {
-  const [productos, setProductos] = useState(productosData)
-  const [productosFiltrados, setProductosFiltrados] = useState(productosData)
+  const [productos, setProductos] = useState([])
+  const [productosFiltrados, setProductosFiltrados] = useState([])
   const [busqueda, setBusqueda] = useState("")
   const [categoriaActiva, setCategoriaActiva] = useState("Todos")
   const [carrito, setCarrito] = useState([])
   const [mostrarDetalles, setMostrarDetalles] = useState(null)
   const [seccionActiva, setSeccionActiva] = useState("catalogo")
-  const [compras, setCompras] = useState(comprasData)
+  const [compras, setCompras] = useState([])
   const [mostrarCarrito, setMostrarCarrito] = useState(false)
-  const navigate = useNavigate();
+  const [cargandoProductos, setCargandoProductos] = useState(true)
+  const [cargandoCompras, setCargandoCompras] = useState(true)
+  const [error, setError] = useState("")
+  const [usuario, setUsuario] = useState(null)
+  const navigate = useNavigate()
 
+  // Verificar autenticación
   useEffect(() => {
     const isAuthenticated = localStorage.getItem("isAuthenticated")
     const userRole = localStorage.getItem("userRole")
+    const userId = localStorage.getItem("userId")
+    
     if (!isAuthenticated || userRole !== "cliente") {
       navigate("/login")
+    } else {
+      // Cargar información del usuario
+      const cargarUsuario = async () => {
+        try {
+          const response = await axios.get('/api/usuarios')
+          const usuarios = response.data
+          const usuarioActual = usuarios.find(u => u.id === parseInt(userId))
+          if (usuarioActual) {
+            setUsuario(usuarioActual)
+          }
+        } catch (err) {
+          console.error("Error al cargar información del usuario:", err)
+        }
+      }
+      
+      cargarUsuario()
     }
   }, [navigate])
 
+  // Cargar productos
+  useEffect(() => {
+    const cargarProductos = async () => {
+      setCargandoProductos(true)
+      setError("")
+      
+      try {
+        const response = await axios.get('/api/productos')
+        setProductos(response.data)
+      } catch (err) {
+        console.error("Error al cargar productos:", err)
+        setError("Error al cargar productos. Usando datos de respaldo.")
+        // Usar datos de respaldo
+        setProductos([
+          {
+            id: 1,
+            nombre: "Cuaderno Universitario 100 hojas",
+            categoria: "Papelería",
+            precio: 2.5,
+            stock: 150,
+            descripcion: "Cuaderno universitario de 100 hojas rayadas, tapa dura",
+            rating: 4.5,
+          },
+          {
+            id: 2,
+            nombre: "Lápiz HB Faber-Castell",
+            categoria: "Papelería",
+            precio: 0.5,
+            stock: 300,
+            descripcion: "Lápiz de grafito HB de alta calidad",
+            rating: 4.8,
+          },
+          {
+            id: 3,
+            nombre: "Set de Colores 24 unidades",
+            categoria: "Regalos",
+            precio: 8.75,
+            stock: 45,
+            descripcion: "Set de colores de madera con 24 tonalidades diferentes",
+            rating: 4.3,
+          },
+          {
+            id: 4,
+            nombre: "Grapadora Metálica",
+            categoria: "Oficina",
+            precio: 12.0,
+            stock: 25,
+            descripcion: "Grapadora metálica resistente para uso profesional",
+            rating: 4.6,
+          },
+          {
+            id: 5,
+            nombre: "Borrador Blanco Pelikan",
+            categoria: "Papelería",
+            precio: 0.75,
+            stock: 200,
+            descripcion: "Borrador blanco suave que no daña el papel",
+            rating: 4.2,
+          },
+          {
+            id: 6,
+            nombre: "Agenda 2024 Ejecutiva",
+            categoria: "Regalos",
+            precio: 15.5,
+            stock: 30,
+            descripcion: "Agenda ejecutiva con calendario y notas",
+            rating: 4.7,
+          },
+          {
+            id: 7,
+            nombre: "Calculadora Científica",
+            categoria: "Oficina",
+            precio: 25.0,
+            stock: 15,
+            descripcion: "Calculadora científica con funciones avanzadas",
+            rating: 4.4,
+          },
+          {
+            id: 8,
+            nombre: "Marcadores Permanentes x6",
+            categoria: "Oficina",
+            precio: 6.25,
+            stock: 80,
+            descripcion: "Set de 6 marcadores permanentes de colores básicos",
+            rating: 4.1,
+          },
+        ])
+      } finally {
+        setCargandoProductos(false)
+      }
+    }
+    
+    cargarProductos()
+  }, [])
+
+  // Cargar compras del cliente
+  useEffect(() => {
+    const userId = localStorage.getItem("userId")
+    const userName = localStorage.getItem("userName")
+    if (!userId || !userName) return
+    
+    const cargarCompras = async () => {
+      setCargandoCompras(true)
+      
+      try {
+        const response = await axios.get('/api/ventas')
+        const ventas = response.data
+        // Filtrar ventas por nombre del cliente
+        const comprasCliente = ventas.filter(venta => 
+          venta.cliente === userName
+        )
+        
+        if (comprasCliente.length > 0) {
+          setCompras(comprasCliente)
+        } else {
+          // Si no hay compras en la API, usar datos de respaldo
+          setCompras([
+            {
+              id: 1,
+              fecha: "2024-01-15",
+              productos: [
+                { nombre: "Cuaderno Universitario 100 hojas", cantidad: 2, precioUnitario: 2.5 },
+                { nombre: "Lápiz HB Faber-Castell", cantidad: 5, precioUnitario: 0.5 },
+              ],
+              total: 7.5,
+              estado: "Entregado",
+              numeroSeguimiento: "BM001234",
+            },
+            {
+              id: 2,
+              fecha: "2024-01-10",
+              productos: [
+                { nombre: "Set de Colores 24 unidades", cantidad: 1, precioUnitario: 8.75 },
+                { nombre: "Borrador Blanco Pelikan", cantidad: 3, precioUnitario: 0.75 },
+              ],
+              total: 11.0,
+              estado: "En tránsito",
+              numeroSeguimiento: "BM001235",
+            },
+            {
+              id: 3,
+              fecha: "2024-01-05",
+              productos: [{ nombre: "Grapadora Metálica", cantidad: 1, precioUnitario: 12.0 }],
+              total: 12.0,
+              estado: "Procesando",
+              numeroSeguimiento: "BM001236",
+            },
+          ])
+        }
+      } catch (err) {
+        console.error("Error al cargar compras:", err)
+        // Usar datos de respaldo
+        setCompras([
+          {
+            id: 1,
+            fecha: "2024-01-15",
+            productos: [
+              { nombre: "Cuaderno Universitario 100 hojas", cantidad: 2, precioUnitario: 2.5 },
+              { nombre: "Lápiz HB Faber-Castell", cantidad: 5, precioUnitario: 0.5 },
+            ],
+            total: 7.5,
+            estado: "Entregado",
+            numeroSeguimiento: "BM001234",
+          },
+          {
+            id: 2,
+            fecha: "2024-01-10",
+            productos: [
+              { nombre: "Set de Colores 24 unidades", cantidad: 1, precioUnitario: 8.75 },
+              { nombre: "Borrador Blanco Pelikan", cantidad: 3, precioUnitario: 0.75 },
+            ],
+            total: 11.0,
+            estado: "En tránsito",
+            numeroSeguimiento: "BM001235",
+          },
+          {
+            id: 3,
+            fecha: "2024-01-05",
+            productos: [{ nombre: "Grapadora Metálica", cantidad: 1, precioUnitario: 12.0 }],
+            total: 12.0,
+            estado: "Procesando",
+            numeroSeguimiento: "BM001236",
+          },
+        ])
+      } finally {
+        setCargandoCompras(false)
+      }
+    }
+    
+    cargarCompras()
+  }, [])
+
+  // Filtrar productos
   useEffect(() => {
     let filtrados = productos
 
@@ -169,8 +276,15 @@ export default function ClientePage() {
   }, [busqueda, categoriaActiva, productos])
 
   const handleCerrarSesion = () => {
+    // ===================== MODIFICACIÓN ASISTENTE: LIMPIAR COMPLETAMENTE EL LOCALSTORAGE =====================
+    // Limpiar todos los datos de sesión para evitar conflictos
     localStorage.removeItem("isAuthenticated")
     localStorage.removeItem("userRole")
+    localStorage.removeItem("userId")
+    localStorage.removeItem("userName")
+    // Limpiar cualquier otro dato que pueda estar causando conflictos
+    localStorage.clear()
+    // ===================== FIN MODIFICACIÓN ASISTENTE =====================
     navigate("/")
   }
 
@@ -199,26 +313,151 @@ export default function ClientePage() {
     setCarrito([])
   }
 
-  const procesarCompra = () => {
+  const procesarCompra = async () => {
     if (carrito.length === 0) return
-
-    const nuevaCompra = {
-      id: compras.length + 1,
-      fecha: new Date().toISOString().split("T")[0],
-      productos: carrito.map((item) => ({
-        nombre: item.nombre,
-        cantidad: item.cantidad,
-        precio: item.precio,
-      })),
-      total: totalCarrito,
-      estado: "Procesando",
-      numeroSeguimiento: `BM00${1237 + compras.length}`,
+    
+    const userId = localStorage.getItem("userId")
+    const userName = localStorage.getItem("userName")
+    
+    if (!userId) {
+      alert("Debe iniciar sesión para realizar una compra")
+      return
     }
-
-    setCompras([nuevaCompra, ...compras])
-    setCarrito([])
-    setMostrarCarrito(false)
-    alert("¡Compra realizada exitosamente!")
+    
+    try {
+      // Obtener datos actuales de ventas
+      const responseVentas = await axios.get('/api/ventas')
+      const ventas = responseVentas.data
+      
+      // Obtener datos actuales de clientes
+      const responseClientes = await axios.get('/api/clientes')
+      const clientes = responseClientes.data
+      
+      // Buscar cliente actual o crear uno nuevo
+      let cliente = clientes.find(c => c.id === parseInt(userId))
+      
+      if (!cliente) {
+        cliente = {
+          id: parseInt(userId),
+          // ===================== MODIFICACIÓN ASISTENTE: USAR NOMBRE ACTUAL DEL USUARIO =====================
+          nombre: usuario?.nombre || userName || "Cliente",
+          email: usuario?.email || "",
+          telefono: usuario?.telefono || "",
+          compras: 0,
+          totalGastado: 0
+        }
+        clientes.push(cliente)
+      } else {
+        // ===================== MODIFICACIÓN ASISTENTE: ACTUALIZAR NOMBRE SI ES DIFERENTE =====================
+        // Asegurar que el cliente tenga el nombre actual del usuario
+        if (usuario?.nombre && cliente.nombre !== usuario.nombre) {
+          cliente.nombre = usuario.nombre
+        }
+      }
+      
+      // Crear nueva venta
+      const nuevaVenta = {
+        id: ventas.length > 0 ? Math.max(...ventas.map(v => v.id)) + 1 : 1,
+        cliente: cliente.nombre, // Usar el nombre del cliente
+        productos: carrito.map(item => ({
+          id: item.id || 0,
+          nombre: item.nombre || 'Producto sin nombre',
+          cantidad: item.cantidad || 1,
+          precioUnitario: item.precio || 0
+        })).filter(item => item.nombre && item.id), // Filtrar productos inválidos
+        total: parseFloat(totalCarrito.toFixed(2)), // Asegurar que sea un número con 2 decimales
+        fecha: new Date().toISOString().split("T")[0],
+        estado: "Procesando"
+        // Dejar que el servidor genere el número de seguimiento
+      }
+      
+      // Guardar la nueva venta
+      console.log('Enviando datos de venta:', JSON.stringify(nuevaVenta, null, 2));
+      try {
+        // Usar la ruta correcta del API para guardar la venta
+        const respuestaVenta = await axios.post('/api/ventas', nuevaVenta);
+        console.log('Respuesta del servidor (venta):', respuestaVenta.data);
+        
+        if (!respuestaVenta.data.success) {
+          throw new Error(respuestaVenta.data.error || 'Error al crear la venta');
+        }
+      } catch (error) {
+        console.error('Error al crear la venta:', error);
+        throw error; // Propagar el error para que sea manejado por el catch principal
+      }
+      
+      // Actualizar inventario
+      const responseInventario = await axios.get('/api/inventario')
+      const inventario = responseInventario.data
+      
+      // Registrar movimientos de inventario para cada producto
+      const nuevosMovimientos = carrito.map(item => ({
+        id: inventario.length > 0 ? Math.max(...inventario.map(i => i.id)) + 1 : 1,
+        producto: item.nombre,
+        tipo: "Salida",
+        cantidad: item.cantidad,
+        fecha: new Date().toISOString().split("T")[0],
+        motivo: `Venta #${nuevaVenta.id}`
+      }))
+      
+      await axios.post('/api/inventario', [...inventario, ...nuevosMovimientos])
+      
+      // Actualizar productos (reducir stock)
+      const responseProductos = await axios.get('/api/productos')
+      const productos = responseProductos.data
+      
+      const productosActualizados = productos.map(producto => {
+        const itemCarrito = carrito.find(item => item.id === producto.id)
+        if (itemCarrito) {
+          return {
+            ...producto,
+            stock: producto.stock - itemCarrito.cantidad
+          }
+        }
+        return producto
+      })
+      
+      await axios.post('/api/productos', productosActualizados)
+      
+      // Actualizar cliente
+      // La actualización del cliente ahora se maneja en el servidor cuando se crea la venta
+      // No es necesario enviar la actualización del cliente desde aquí
+      
+      // Actualizar estado local
+      setCompras([nuevaVenta, ...compras])
+      setCarrito([])
+      setMostrarCarrito(false)
+      
+      // Recargar productos para actualizar stock
+      const newProductsResponse = await axios.get('/api/productos')
+      setProductos(newProductsResponse.data)
+      
+      alert("¡Compra realizada exitosamente!")
+    } catch (err) {
+      console.error("Error al procesar la compra:", err)
+      
+      // Mostrar mensaje de error más descriptivo
+      let mensajeError = "Error al procesar la compra. Por favor, intente nuevamente.";
+      
+      if (err.response) {
+        // El servidor respondió con un código de error
+        console.error("Respuesta del servidor:", err.response.data);
+        
+        if (err.response.data && err.response.data.error) {
+          mensajeError = `Error: ${err.response.data.error}`;
+          
+          if (err.response.data.message) {
+            mensajeError += `\n${err.response.data.message}`;
+          }
+          
+          if (err.response.data.detalles && Array.isArray(err.response.data.detalles)) {
+            mensajeError += `\n${err.response.data.detalles.join('\n')}`;
+          }
+        }
+      }
+      
+      alert(mensajeError)
+    }
   }
 
   const categorias = ["Todos", "Papelería", "Regalos", "Oficina"]
@@ -395,79 +634,90 @@ export default function ClientePage() {
               </div>
             </div>
 
-            {/* Lista de productos */}
-            <div className="space-y-4">
-              {productosFiltrados.map((producto) => (
-                <div key={producto.id} className="bg-white rounded-lg border border-gray-200 p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <Package className="h-6 w-6 text-gray-700" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-1">{producto.nombre}</h3>
-                        <p className="text-gray-600 text-sm mb-2">{producto.descripcion}</p>
-                        <div className="flex items-center space-x-4">
-                          <span className="text-xl font-bold text-gray-900">${producto.precio.toFixed(2)}</span>
-                          <span className="text-sm text-gray-500">Stock: {producto.stock}</span>
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-4 w-4 fill-gray-400 text-gray-400" />
-                            <span className="text-sm text-gray-600">{producto.rating}</span>
+            {/* Estado de carga */}
+            {cargandoProductos ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600">Cargando productos...</p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <p className="text-red-500">{error}</p>
+              </div>
+            ) : (
+              /* Lista de productos */
+              <div className="space-y-4">
+                {productosFiltrados.map((producto) => (
+                  <div key={producto.id} className="bg-white rounded-lg border border-gray-200 p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                          <Package className="h-6 w-6 text-gray-700" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-1">{producto.nombre}</h3>
+                          <p className="text-gray-600 text-sm mb-2">{producto.descripcion}</p>
+                          <div className="flex items-center space-x-4">
+                            <span className="text-xl font-bold text-gray-900">${producto.precio.toFixed(2)}</span>
+                            <span className="text-sm text-gray-500">Stock: {producto.stock}</span>
+                            <div className="flex items-center space-x-1">
+                              <Star className="h-4 w-4 fill-gray-400 text-gray-400" />
+                              <span className="text-sm text-gray-600">{producto.rating}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Button
-                        onClick={() => setMostrarDetalles(mostrarDetalles === producto.id ? null : producto.id)}
-                        variant="outline"
-                        className="border-gray-400 text-gray-700 hover:bg-gray-100 bg-transparent"
-                      >
-                        <Eye className="h-4 w-4 mr-2" />
-                        Ver Detalles
-                      </Button>
-                      <Button
-                        onClick={() => agregarAlCarrito(producto)}
-                        className="bg-gray-700 text-white hover:bg-gray-800"
-                        disabled={producto.stock === 0}
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Añadir
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Detalles expandidos */}
-                  {mostrarDetalles === producto.id && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-2">Información del Producto</h4>
-                          <ul className="text-sm text-gray-600 space-y-1">
-                            <li>
-                              <strong>Categoría:</strong> {producto.categoria}
-                            </li>
-                            <li>
-                              <strong>Stock disponible:</strong> {producto.stock} unidades
-                            </li>
-                            <li>
-                              <strong>Calificación:</strong> {producto.rating}/5 estrellas
-                            </li>
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-2">Descripción</h4>
-                          <p className="text-sm text-gray-600">{producto.descripcion}</p>
-                        </div>
+                      <div className="flex items-center space-x-3">
+                        <Button
+                          onClick={() => setMostrarDetalles(mostrarDetalles === producto.id ? null : producto.id)}
+                          variant="outline"
+                          className="border-gray-400 text-gray-700 hover:bg-gray-100 bg-transparent"
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          Ver Detalles
+                        </Button>
+                        <Button
+                          onClick={() => agregarAlCarrito(producto)}
+                          className="bg-gray-700 text-white hover:bg-gray-800"
+                          disabled={producto.stock === 0}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Añadir
+                        </Button>
                       </div>
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
+
+                    {/* Detalles expandidos */}
+                    {mostrarDetalles === producto.id && (
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <h4 className="font-semibold text-gray-800 mb-2">Información del Producto</h4>
+                            <ul className="text-sm text-gray-600 space-y-1">
+                              <li>
+                                <strong>Categoría:</strong> {producto.categoria}
+                              </li>
+                              <li>
+                                <strong>Stock disponible:</strong> {producto.stock} unidades
+                              </li>
+                              <li>
+                                <strong>Calificación:</strong> {producto.rating}/5 estrellas
+                              </li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-gray-800 mb-2">Descripción</h4>
+                            <p className="text-sm text-gray-600">{producto.descripcion}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Mensaje si no hay productos */}
-            {productosFiltrados.length === 0 && (
+            {!cargandoProductos && productosFiltrados.length === 0 && (
               <div className="text-center py-12">
                 <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">No se encontraron productos</h3>
@@ -482,7 +732,11 @@ export default function ClientePage() {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-gray-800">Mis Compras</h2>
 
-            {compras.length === 0 ? (
+            {cargandoCompras ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600">Cargando historial de compras...</p>
+              </div>
+            ) : compras.length === 0 ? (
               <div className="text-center py-12">
                 <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">No tienes compras registradas</h3>
@@ -515,7 +769,7 @@ export default function ClientePage() {
                             {producto.nombre} x{producto.cantidad}
                           </span>
                           <span className="text-gray-800 font-medium">
-                            ${(producto.precio * producto.cantidad).toFixed(2)}
+                            ${(producto.precioUnitario * producto.cantidad).toFixed(2)}
                           </span>
                         </div>
                       ))}
@@ -645,10 +899,6 @@ export default function ClientePage() {
             <h1 className="text-xl font-bold text-gray-800">Bazar Doña Marlene</h1>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="outline" className="border-gray-400 text-gray-700 hover:bg-gray-100 bg-transparent">
-              <User className="h-4 w-4 mr-2" />
-              Mi Cuenta
-            </Button>
             <Button
               onClick={handleCerrarSesion}
               variant="outline"

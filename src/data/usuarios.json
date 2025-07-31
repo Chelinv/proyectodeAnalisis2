@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "nombre": "Admin Principal",
+    "apellido": "Sistema",
+    "email": "admin@bazar.com",
+    "telefono": "555-0101",
+    "usuario": "admin",
+    "contraseña": "1234",
+    "rol": "Administrador",
+    "estado": "Activo",
+    "ultimoAcceso": "2025-07-30"
+  },
+  {
+    "id": 2,
+    "nombre": "Cliente",
+    "apellido": "Demo",
+    "email": "cliente@bazar.com",
+    "telefono": "555-0102",
+    "usuario": "cliente",
+    "contraseña": "1234",
+    "rol": "Cliente",
+    "estado": "Activo",
+    "ultimoAcceso": "2024-01-14"
+  },
+  {
+    "nombre": "Celine Betzabé",
+    "apellido": "Vélez Nieto",
+    "email": "chelinv2004@outlook.com",
+    "telefono": "+593993465274",
+    "usuario": "celine",
+    "contraseña": "1234",
+    "rol": "Cliente",
+    "estado": "Activo",
+    "ultimoAcceso": "2025-07-30",
+    "id": 3
+  },
+  {
+    "nombre": "helen",
+    "apellido": "velez",
+    "email": "helen@gmail.com",
+    "telefono": "993465274",
+    "usuario": "helen",
+    "contraseña": "1234",
+    "rol": "Cliente",
+    "estado": "Activo",
+    "ultimoAcceso": "2025-07-29",
+    "id": 4
+  },
+  {
+    "nombre": "henrry",
+    "apellido": "velez",
+    "email": "henrry@gmail.com",
+    "telefono": "0996735426",
+    "usuario": "henrry",
+    "contraseña": "1234",
+    "rol": "Cliente",
+    "estado": "Activo",
+    "ultimoAcceso": "2025-07-30",
+    "id": 5
+  }
+]
